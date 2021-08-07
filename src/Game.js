@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import './Game.css';
 import { Board } from "./Board";
+import { Timer } from "./Timer";
 
 export const Game = (props) => {        
     let possibilities = new Set();
@@ -25,9 +27,12 @@ export const Game = (props) => {
   //game logic
   const startGame = () => {
     calculatePossibilites();
-    console.log(possibilities);
-    const digit = getRandomItem();
-    playChance(digit);
+    if (possibilities.size === 0) {
+        props.onFinish(`Play again`, `Well done! You won this round.`);
+    } else {
+        const digit = getRandomItem();
+        playChance(digit);
+    }
   }
   const calculatePossibilites = () => {
     possibilities.clear();
@@ -69,9 +74,15 @@ export const Game = (props) => {
     setUnavailabeDigits(temp);
   }
 
+  const handleTimeout = () => {
+    props.onFinish(`Try again`, `Timeout! Better luck next time.`)
+  }
+
   return (
     <div>
+        <span className="layoutText">Pick one or more number that sum to the number of stars.</span>
         <Board requiredSum={currentChance} unavailableDigits={unavailableDigits} onMatch={handleMatch}/>
+        <Timer timeLimit={props.timeLimit} onTimeout={handleTimeout}/>
     </div>
     );
 }
