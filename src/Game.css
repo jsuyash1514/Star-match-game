@@ -1,0 +1,21 @@
+.game{
+    width: 500px;
+    height: 210px;
+    display: flex;
+    justify-content: flex-start;
+    margin: 20px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    border: solid thin #ddd;
+}
+.mini-container{
+    display: flex;
+    flex-direction: row;
+}
+.button{
+    padding-top: 3px;
+    padding-left: 10px;
+}
