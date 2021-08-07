@@ -36,7 +36,7 @@ export const Board = (props) => {
     },[buttonBgColors])
 
     // Handle digit click
-    const handleButtonClick = async (digit) => {   
+    const handleButtonClick = (digit) => {   
         if (props.unavailableDigits.has(digit)) return;
 
         if (candidates.has(digit)) {
