@@ -1,50 +1,78 @@
-import React from "react";
-import { Button } from "./Button";
-import './Game.css'
-import { Star } from "./Star";
+import { useEffect, useState } from "react";
+import { Board } from "./Board";
 
-export const Game = (props) => {
-    let bgColors = [];
-    for(let i = 1; i<=9; i++) {
-        if(i <= props.currentDigit) bgColors.push('#000');
-        else bgColors.push('#DDD');
+export const Game = (props) => {        
+    let possibilities = new Set();
+
+  //Define state
+  const [availableDigits, setAvailableDigits] = useState(new Set());
+  const [unavailableDigits, setUnavailabeDigits] = useState(new Set());
+  const [currentChance, setCurrentChance] = useState(0);
+
+  // one time initialisations
+  useEffect(() => {
+      for(let i = 0; i<9; i++) {
+        availableDigits.add(i+1);
+     }
+     startGame();
+  },[]);
+
+  // Handle next chance after a match is found
+  useEffect(() => {
+    startGame();
+  },[unavailableDigits]);
+
+  //game logic
+  const startGame = () => {
+    calculatePossibilites();
+    console.log(possibilities);
+    const digit = getRandomItem();
+    playChance(digit);
+  }
+  const calculatePossibilites = () => {
+    possibilities.clear();
+    if(availableDigits.size === 0) return;
+    let it = availableDigits.values();
+    for (let i = 0; i<availableDigits.size; i++) {
+      if (possibilities.size === 0) {
+        possibilities.add(it.next().value);
+      } else {
+        let tmp1 = it.next().value;
+        let jt = possibilities.values();
+        for (let j = 0; j<possibilities.size; j++) {
+          let tmp2 = jt.next().value;
+          let sum = tmp1 + tmp2;
+          if (sum>=1 && sum<=9){
+            possibilities.add(sum);
+          }
+        }
+        possibilities.add(tmp1);
+      }
     }
-    return (
-        <div className="game">
-            <div className="star container">
-                <div className="mini-container">
-                    <Star bgColor={bgColors[0]}/>
-                    <Star bgColor={bgColors[1]}/>
-                    <Star bgColor={bgColors[2]}/>
-                </div>
-                <div className="mini-container">
-                    <Star bgColor={bgColors[3]}/>
-                    <Star bgColor={bgColors[4]}/>
-                    <Star bgColor={bgColors[5]}/>
-                </div>
-                <div className="mini-container">
-                    <Star bgColor={bgColors[6]}/>
-                    <Star bgColor={bgColors[7]}/>
-                    <Star bgColor={bgColors[8]}/>
-                </div>
-            </div>
-            <div className="button container">
-                <div className="mini-container">
-                    <Button digit={1}/>
-                    <Button digit={2}/>
-                    <Button digit={3}/>
-                </div>
-                <div className="mini-container">
-                    <Button digit={4}/>
-                    <Button digit={5}/>
-                    <Button digit={6}/>
-                </div>
-                <div className="mini-container">
-                    <Button digit={7}/>
-                    <Button digit={8}/>
-                    <Button digit={9}/>
-                </div>
-            </div>
-        </div>
+  }
+  const getRandomItem = () => {
+    let items = Array.from(possibilities);
+    return items[Math.floor(Math.random() * items.length)]; 
+  }
+  const playChance = (digit) => {
+    setCurrentChance(digit)
+  }
+
+  const handleMatch = (candidates) => {
+    let items = Array.from(candidates);
+    console.log(items);
+    let temp = new Set(unavailableDigits);
+    items.map(item => {
+      availableDigits.delete(item);
+      temp.add(item);
+    });
+    setUnavailabeDigits(temp);
+  }
+
+  return (
+    <div>
+        <Board requiredSum={currentChance} unavailableDigits={unavailableDigits} onMatch={handleMatch}/>
+    </div>
     );
 }
+
