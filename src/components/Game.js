@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import './Game.css';
+import './style/Game.css';
 import { Board } from "./Board";
 import { Timer } from "./Timer";
 

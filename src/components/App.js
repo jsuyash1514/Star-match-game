@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import './App.css';
+import { useState } from 'react';
+import './style/App.css';
 import { Game } from './Game';
 
 export const App = (props) => { 

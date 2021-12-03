@@ -1,5 +1,5 @@
 import React from "react";
-import './Button.css';
+import './style/Button.css';
 
 export const Button = (props) => {
     let textColor;

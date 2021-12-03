@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
-import './Board.css'
+import './style/Board.css'
 import { Star } from "./Star";
 
 export const Board = (props) => {
@@ -26,6 +26,7 @@ export const Board = (props) => {
     // Side effect of update sum
     useEffect(() => {
         updateButtonState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[sum])
 
     // Side effect of "Match found"

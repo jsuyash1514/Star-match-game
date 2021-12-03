@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './Star.css'
+import './style/Star.css'
 
 export const Star = (props) => {
     return(
